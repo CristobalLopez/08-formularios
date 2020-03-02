@@ -33,7 +33,30 @@
         </div>
     </div>
 
+    <div class="form-group row">
+        <label class="col-2 col-form-label">Pais</label>
+        <div class="col-8">
+            <select class="form-control" name="pais" [disabled]="paises.length===0" [class.is-invalid]="pais.invalid && pais.touched" #pais="ngModel" [ngModel]="usuario.pais" required>
+                <option *ngFor="let pais of paises" [value]="pais.codigo">
+                    {{pais.nombre}}
+                </option>
+            </select>
+        </div>
+    </div>
 
+    <div class="form-group row">
+        <label class="col-2 col-form-label">Genero</label>
+        <div class="col-8">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" [ngModel]="usuario.genero" value="M" [class.is-invalid]="genero.invalid && genero.touched" required #genero="ngModel">
+                <label class="form-check-label">Masculino</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" [ngModel]="usuario.genero" name="genero" [class.is-invalid]="genero.invalid && genero.touched" value="F" required #genero="ngModel">
+                <label class="form-check-label">Femenino</label>
+            </div>
+        </div>
+    </div>
 
     <div class="form-group row">
         <label class="col-2 col-form-label">&nbsp;</label>
