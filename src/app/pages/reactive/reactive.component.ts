@@ -15,6 +15,7 @@ export class ReactiveComponent implements OnInit {
 
     this.crearFormulario();
     this.cargarDataAlFormulario();
+    this.crearListeners();
     
    }
 
@@ -45,6 +46,20 @@ export class ReactiveComponent implements OnInit {
     return this.forma.get('direccion.ciudad').invalid && this.forma.get('direccion.ciudad').touched
   }
 
+  get Password1NoValido(){
+    return this.forma.get('password1').invalid && this.forma.get('password1').touched
+  }
+
+  get Password2NoValido(){
+    const password1= this.forma.get('password1').value;
+    const password2= this.forma.get('password2').value;
+    return (password1=== password2)? false: true;
+  }
+
+  get usuarioNoValido(){
+    return this.forma.get('usuario').invalid && this.forma.get('usuario').touched
+  }
+  
  
 
   crearFormulario(){
@@ -52,12 +67,17 @@ export class ReactiveComponent implements OnInit {
       nombre: ['', [Validators.required, Validators.minLength(5)]],
       apellido: ['', [Validators.required, this.validadores.noHerrera]],
       correo: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
+      usuario: ['', , this.validadores.existeUsuario],
+      password1: ['', Validators.required],
+      password2: ['', Validators.required],
       direccion: this.fb.group({
         distrito: ['', Validators.required],
         ciudad: ['', Validators.required],
       }),
       pasatiempos:this.fb.array([])
 
+    }, {
+      validators: this.validadores.passwordsIguales('password1', 'password2')
     });
 
   }
@@ -67,6 +87,8 @@ export class ReactiveComponent implements OnInit {
       nombre: 'Cristobal',
       apellido: 'Lopez',
       correo: 'clopez@gmail.com',
+      password1:'123',
+      password2:'123',
       direccion: {
         distrito: 'Metropolitana',
         ciudad: 'Peñaflor'
@@ -99,6 +121,16 @@ export class ReactiveComponent implements OnInit {
     this.forma.reset({
        nombre: 'Sin nombre'
     });
+  }
+
+  crearListeners(){
+    // this.forma.valueChanges.subscribe(valor=>{
+    //   console.log(valor);
+    // });
+
+    // this.forma.statusChanges.subscribe(status=> console.log({status}));
+
+    this.forma.get('nombre').valueChanges.subscribe(console.log);
   }
 
 }
